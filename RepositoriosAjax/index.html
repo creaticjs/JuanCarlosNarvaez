@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <title>Ajax</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td style="left: 20px;">
+                <h1 style="text-align: center;">Mi Perfil</h1>
+                <img id="avatar" onclick="renderizarDatos()" src="" alt="" style="border-radius: 200px 200px 200px 200px; text-align: center; cursor: pointer;">
+                <h4 id="nombre" style="text-align: center;"></h4>
+            </td>
+            <td style="width: 20px;"></td>
+            <td>
+                <div class="card" style="width: 50rem;">
+                    <div id="bio" class="card-body"></div>
+                        <ul class="list-group list-group-flush">
+                            <li id="compania" class="list-group-item"></li>
+                            <li id="locacion" class="list-group-item"></li>
+                            <li id="repos" class="list-group-item"></li>
+                        </ul>
+                    <div class="card-body">
+                        <button onclick="renderizarRepositorios()" type="button" class="btn btn-success">Consultar repositorios</button>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <br>
+    <h2>Repositorios personales</h2>
+
+    <table>
+        <tr>
+            <td>
+                <div id="cuerpo" class="card" style="width: auto;"></div>
+            </td>
+
+        </tr>
+
+    </table>
+
+    <div id="repositorios">
+
+    </div>
+
+    <!--<div id="renderajax" class="card" style="width: 18rem;">
+        <img id="avatar" src="" alt="">
+        <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Cras justo odio</li>
+            <li class="list-group-item">Dapibus ac facilisis in</li>
+            <li class="list-group-item">Vestibulum at eros</li>
+        </ul>
+        <div class="card-body">
+            <button onclick="getRequestGit()" type="button" class="btn btn-success">Traer datos</button>
+        </div>
+    </div>-->
+
+    
+    <script>
+        var datosperfil={};
+        var datosRepositorios={};
+        
+        cargarDatos();
+        //cargarDatosRepositorios();
+        /*function getRequestGit(){
+            var peticion  = new  XMLHttpRequest();
+            peticion.onreadystatechange = function(){
+                if (this.readyState == 4 && this.status == 200) {
+                    datosperfil = JSON.parse(this.responseText)
+                    document.getElementById('nombre').innerHTML = datosperfil.name
+                    document.getElementById('bio').innerHTML = datosperfil.bio
+                    var imagen=document.getElementById('avatar');
+                    imagen.setAttribute('src',datosperfil.avatar_url)
+                    console.log(datosperfil);
+                    //document.getElementById("renderajax").innerHTML = this.responseText;
+                }
+            }
+            peticion.open('GET','https://api.github.com/users/juanarvaez',true);
+            peticion.send();
+        }*/
+
+        function cargarDatos(){
+            var peticion  = new  XMLHttpRequest();
+            peticion.onreadystatechange = function(){
+                if (this.readyState == 4 && this.status == 200) {
+                    datosperfil = JSON.parse(this.responseText)
+                    var imagen=document.getElementById('avatar');
+                    imagen.setAttribute('src',datosperfil.avatar_url)
+                    document.getElementById('nombre').innerHTML = datosperfil.name
+                    cargarDatosRepositorios(datosperfil.repos_url);
+                }
+            }
+            peticion.open('GET','https://api.github.com/users/juanarvaez',true);
+            peticion.send();
+        }
+
+        function cargarDatosRepositorios(url){
+
+            var peticion  = new  XMLHttpRequest();
+            peticion.onreadystatechange = function(){
+                if (this.readyState == 4 && this.status == 200) {
+                    datosRepositorios = JSON.parse(this.responseText)
+                    console.log(datosRepositorios)
+                }
+            }
+            peticion.open('GET',url,true);
+            peticion.send();
+        }
+
+        function renderizarDatos(){
+            document.getElementById('bio').innerHTML = "<h3>Biografía: </h3>" + datosperfil.bio;
+            document.getElementById('compania').innerHTML = "<h3>Compañia: </h3>" + datosperfil.company;
+            document.getElementById('locacion').innerHTML = "<h3>Localización: </h3>" + datosperfil.location;
+            document.getElementById('repos').innerHTML = "<h3>Repositorios: </h3>" + datosperfil.public_repos;
+        }
+
+        function renderizarRepositorios(){
+            var cuerpo=document.getElementById('cuerpo');
+            var auxTarjeta = "";
+            var i = 1;
+            datosRepositorios.forEach(function(repositorio) {
+                auxTarjeta += "<div class='card' style='width: 460px;'>" +
+                                 "<div class='card-header'>" + i + ") " + repositorio.name + "</div>" +
+                                 "<ul class='list-group list-group-flush'>" +
+                                    "<li class='list-group-item'>" + "<h6> ID: " + repositorio.id + "</h6>" + "</li>" +
+                                    "<li class='list-group-item'>" + "<h6> ID: " + repositorio.node_id + "</h6>" + "</li>" +
+                                    "<li class='list-group-item'>" + "<h6> ID: " + repositorio.git_url + "</h6>" + "</li>" +
+                                 "</ul>" +
+                              "</div> <br>"
+                              i++;
+            }, this);
+            cuerpo.innerHTML=auxTarjeta;
+        }
+
+        /*function renderRepositorios(url){
+            var data = [];
+            var req = new XMLHttpRequest();
+            req.onreadystatechange = function(){
+                if(this.readyState==4 && this.status == 200){
+                    data = JSON.parse(this.responseText);
+                    //datosRepositorios = JSON.parse(this.responseText);
+                    //document.getElementById('repositorios').innerHTML = this.responseText;
+                }
+            }
+            req.open('GET',url,true);
+            req.send();
+        }*/
+
+    </script>
+</body>
+</html>
