@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h1 id="titulo">Futbol Colombiano</h1>
+
+    <select name="" id="equipos">
+        <option value="nacional">Nacional</option>
+        <option value="america">America</option>
+        <option value="millonarios">Millonarios</option>
+        <option value="tolima">Tolima</option>
+        <option value="medellin">Medellin</option>
+        <option value="pasto">Pasto</option>
+    </select>
+
+    <!--<h2 id="nombre">Equipo seleccionado</h2>
+    <div>
+        <img id="imgEquipo" src="" alt="">
+    </div>-->
+
+    <table id="infoEquipo">
+        <tr>
+            <td>
+                <img id="imgEquipo" src="" alt="">
+            </td>
+            <td></td>
+            <td>
+                <h2 id="nombre"></h2>
+                <h4 id="dtEquipo"></h4>
+                <h4 id="rsEquipo"></h4>
+                <h4 id="jgEquipo"></h4>
+                <h4 id="estEquipo"></h4>
+                <h4 id="estreEquipo"></h4>
+            </td>
+        </tr>
+        <tr>
+
+        </tr>
+    </table>
+
+    <script>
+
+        var dataEquipos = [
+            {
+                nombre: "Atlético Nacional",
+                urlimage: "https://goo.gl/oCu6GD",
+                dt: "Jorge Almirón",
+                jugadores: [" 1. Fernando Monetti (Arq)","22. Juan David Ramírez (Arq)","25. Cristian Vargas (Arq)",
+                            "<br>3. Felipe Aguilar (Def)","2. Daniel Bocanegra (Def)","12. Alexis Henríquez (Def)","26. Carlos Cuesta (Def)","15. Deiver Machado (Def)","32. Cristian Mafla (Def)","4. Diego Braghieri (Def)","13. Helibelton Palacios (Def)",
+                            "<br>29. Aldo Leao Ramírez (Vol)","27. Gonzalo Castellani (Vol)","10. Juan Pablo Ramírez (Vol)","6. Raúl Loaiza Morelos (Vol)","21. Jorman Campuzano (Vol)",
+                            "<br>17. Dayro Moreno (Del)","9. Omar Duarte (Del)","19. Yerson Candelo (Del)","16. Vladimir Hernández (Del)","20. Jeison Lucumí (Del)","7. Gustavo Torres (Del)","14. Reinaldo Lenis (Del)","11. Carlos Rivas (Del)"],
+                resenia: "El Atlético Nacional S.A.,​ mejor conocido como Atlético Nacional, o simplemente Nacional, es un club de fútbol de la ciudad de Medellín, Colombia, fundado el 7 de marzo de 1947 bajo el nombre de Club Atlético Municipal de Medellín, aunque por escritura pública esta sociedad fue constituida el 30 de abril de 1947 en la notaría primera de Medellín. En 1950, el expresidente de la Liga Antioqueña de fútbol, Luis Alberto Villegas, cambió el nombre del club por Club Atlético Nacional. El club participa en la máxima categoría de la División Mayor del Fútbol Colombiano, la Categoría Primera A desde su fundación en 1948, siendo uno de los tres únicos equipos que ha participado en todos sus torneos, junto a Millonarios y Santa Fe.",
+                estadio: "Atanasio Girardot",
+                estrellas: "16",
+            },
+            {
+                nombre: "",
+                urlimage: "",
+                dt: "",
+                jugadores: ["",""],
+                resenia: "",
+                estadio: "",
+                estrellas: "",
+            },
+            {
+                nombre: "",
+                urlimage: "",
+                dt: "",
+                jugadores: ["",""],
+                resenia: "",
+                estadio: "",
+                estrellas: "",
+            },
+            {
+                nombre: "",
+                urlimage: "",
+                dt: "",
+                jugadores: ["",""],
+                resenia: "",
+                estadio: "",
+                estrellas: "",
+            },
+            {
+                nombre: "",
+                urlimage: "",
+                dt: "",
+                jugadores: ["",""],
+                resenia: "",
+                estadio: "",
+                estrellas: "",
+            },
+            {
+                nombre: "",
+                urlimage: "",
+                dt: "",
+                jugadores: ["",""],
+                resenia: "",
+                estadio: "",
+                estrellas: "",
+            }
+        ];
+
+        var imagenesEquipos = ['https://goo.gl/T834mU', 'https://goo.gl/bSqP4X', 'https://goo.gl/3NH1m9', 'https://goo.gl/rbqcvR', 'https://goo.gl/a5qRwZ', 'https://goo.gl/oz7Bf2'];
+        /*var selEquipos = document.getElementById('equipos');
+        var nomEquipo = document.getElementById('nombre');
+        var imagenEquipo = document.getElementById('imgEquipo');
+        selEquipos.onchange = function(){
+            nomEquipo.innerHTML = this.options[this.selectedIndex].text;
+            imagenEquipo.setAttribute('src',imagenesEquipos[this.selectedIndex]);
+            nomEquipo.innerHTML = dataEquipos[this.selectedIndex].nombre;
+            
+        }*/
+        var selEquipos = document.getElementById('equipos');
+        var nomEquipo = document.getElementById('nombre');
+        var imgEquipo = document.getElementById('imgEquipo');
+        var dtEquipo = document.getElementById('dtEquipo');
+        var resEquipo = document.getElementById('rsEquipo');
+        var jugadores = document.getElementById('jgEquipo');
+        var estadio = document.getElementById('estEquipo');
+        var estrellas = document.getElementById('estreEquipo');
+
+        selEquipos.onchange = function(){
+            nomEquipo.innerHTML = dataEquipos[this.selectedIndex].nombre;
+            imgEquipo.setAttribute('src', dataEquipos[this.selectedIndex].urlimage);
+            dtEquipo.innerHTML = "Director técnico: " + dataEquipos[this.selectedIndex].dt;
+            resEquipo.innerHTML = "Reseña: " + "<br>" + dataEquipos[this.selectedIndex].resenia;
+
+            var equipo = "Jugadores:" + "<br>";
+
+            for(var i=0; i < dataEquipos[this.selectedIndex].jugadores.length; i++){
+                equipo += dataEquipos[this.selectedIndex].jugadores[i] + "<br>";
+            }
+
+            jugadores.innerHTML = equipo;
+
+            estadio.innerHTML = "Estadio: " + dataEquipos[this.selectedIndex].estadio;
+            estrellas.innerHTML = "Estrellas: " + dataEquipos[this.selectedIndex].estrellas;
+        }
+    </script>
+</body>
+</html>
